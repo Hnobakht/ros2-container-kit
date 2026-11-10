@@ -1,0 +1,17 @@
+# Build the core image first: docker compose build ros
+FROM local/ros2-jazzy-gazebo:dev
+
+USER root
+
+# Open-RMF fleet-management demos, Gazebo transport and MCAP recording.
+# Warehouse 3D models/maps are fetched separately by the preload workflow.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        ros-jazzy-rmf-demos \
+        ros-jazzy-rosbag2-storage-mcap \
+        python3-yaml \
+        sqlite3 \
+    && rm -rf /var/lib/apt/lists/*
+
+USER ros
+WORKDIR /workspace/ros2_ws
+CMD ["bash"]

@@ -4,3 +4,17 @@ ros2_ws/build/
 ros2_ws/install/
 ros2_ws/log/
 .vscode/
+__pycache__/
+*.pyc
+downloads/
+*.bag
+*.db3
+*.mcap
+*.pt
+*.pth
+*.onnx
+*.safetensors
+*.ckpt
+*.usdz
+*.zip
+*.tar.gz

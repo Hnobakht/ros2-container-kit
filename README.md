@@ -1,5 +1,24 @@
 # ROS 2 Jazzy + Gazebo Harmonic Docker development kit
 
+**Now with optional robotics research stacks:** mobile navigation and SLAM,
+CUDA ML/RL, Universal Robots + MoveIt manipulation, and Open-RMF warehouse /
+factory demonstrations. See [Stack guide](docs/STACKS.md) and
+[Offline/preload guide](docs/OFFLINE.md). Original `docker compose up -d ros`
+continues to work.
+
+To preload the curated images, reference source trees, 3D assets and compact
+model weights while Internet access is available:
+
+```bash
+bash scripts/prepare.sh
+bash scripts/preload.sh --all
+```
+
+This is intentionally **not** a single monolithic image: PyTorch, manipulation,
+and fleet simulation have different dependencies, and heavyweight GPU tools
+must not be imposed on a 6 GB RTX 2060. Downloaded binary assets remain
+outside Git. Run `bash scripts/preload.sh --help` for selective options.
+
 For Ubuntu 26.04 hosts, running ROS 2 Jazzy inside an Ubuntu 24.04-based
 container keeps ROS, colcon, rosdep, Gazebo, and their Python libraries off the
 host OS. The source workspace is bind-mounted, so it persists outside Docker.

@@ -1,0 +1,18 @@
+# Build the core image first: docker compose build ros
+FROM local/ros2-jazzy-gazebo:dev
+
+USER root
+
+# Official ROS Jazzy binary packages for MoveIt 2, Universal Robots and
+# Gazebo Harmonic simulation. No physical robot is contacted at build time.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        ros-jazzy-moveit \
+        ros-jazzy-moveit-setup-assistant \
+        ros-jazzy-ur \
+        ros-jazzy-ur-simulation-gz \
+        ros-jazzy-ros2controlcli \
+    && rm -rf /var/lib/apt/lists/*
+
+USER ros
+WORKDIR /workspace/ros2_ws
+CMD ["bash"]

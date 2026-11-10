@@ -2,4 +2,9 @@
 .docker
 .git
 ros2_ws
+downloads
+*.pt
+*.pth
+*.safetensors
+*.onnx
 *.zip

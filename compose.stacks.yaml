@@ -1,0 +1,57 @@
+# Extend the existing ROS/Gazebo GUI and GPU settings without changing them.
+# Build core first: docker compose build ros
+# Then: docker compose -f compose.yaml -f compose.stacks.yaml build ml manipulation warehouse
+services:
+  ml:
+    extends:
+      service: ros
+    profiles: [ml]
+    build:
+      context: .
+      dockerfile: Dockerfile.ml
+    image: local/ros2-jazzy-ml:dev
+    volumes:
+      - ml_build:/workspace/ros2_ws/build
+      - ml_install:/workspace/ros2_ws/install
+      - ml_log:/workspace/ros2_ws/log
+      - ml_cache:/home/ros/.cache
+      - ./downloads/datasets:/workspace/datasets
+
+  manipulation:
+    extends:
+      service: ros
+    profiles: [manipulation]
+    build:
+      context: .
+      dockerfile: Dockerfile.manipulation
+    image: local/ros2-jazzy-manipulation:dev
+    volumes:
+      - manipulation_build:/workspace/ros2_ws/build
+      - manipulation_install:/workspace/ros2_ws/install
+      - manipulation_log:/workspace/ros2_ws/log
+
+  warehouse:
+    extends:
+      service: ros
+    profiles: [warehouse]
+    build:
+      context: .
+      dockerfile: Dockerfile.warehouse
+    image: local/ros2-jazzy-warehouse:dev
+    volumes:
+      - warehouse_build:/workspace/ros2_ws/build
+      - warehouse_install:/workspace/ros2_ws/install
+      - warehouse_log:/workspace/ros2_ws/log
+      - ./downloads/assets:/workspace/assets:ro
+
+volumes:
+  ml_build:
+  ml_install:
+  ml_log:
+  ml_cache:
+  manipulation_build:
+  manipulation_install:
+  manipulation_log:
+  warehouse_build:
+  warehouse_install:
+  warehouse_log:

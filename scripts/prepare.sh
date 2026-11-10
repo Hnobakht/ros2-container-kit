@@ -27,7 +27,9 @@ if ! command -v xauth >/dev/null 2>&1; then
   exit 1
 fi
 
-mkdir -p "${project_dir}/.docker" "${project_dir}/ros2_ws/src"
+mkdir -p "${project_dir}/.docker" "${project_dir}/ros2_ws/src" \
+  "${project_dir}/downloads/sources" "${project_dir}/downloads/assets" \
+  "${project_dir}/downloads/datasets"
 umask 077
 
 # The cookie is copied only into a project-local auth file; no broad xhost ACLs.

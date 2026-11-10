@@ -1,0 +1,41 @@
+name: Validate container kit
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  static:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate scripts and Python
+        run: |
+          for script in scripts/*.sh; do bash -n "$script"; done
+          python3 -m py_compile scripts/preload_models.py
+          git diff --check
+      - name: Validate Compose interpolation and profiles
+        env:
+          LOCAL_UID: "1000"
+          LOCAL_GID: "1000"
+          ROS_DISPLAY: ":99"
+          ROS_XAUTHORITY: "/tmp/ros-test.xauth"
+          ROS_DOMAIN_ID: "42"
+        run: |
+          docker compose -f compose.yaml config --quiet
+          docker compose -f compose.yaml -f compose.stacks.yaml \
+            --profile ml --profile manipulation --profile warehouse \
+            config --quiet
+          docker compose -f compose.yaml -f compose.isaac.yaml \
+            --profile isaac config --quiet
+
+  # Expensive and GPU-independent. Start manually from Actions when needed.
+  build-core:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ROS desktop image (no GPU required to build)
+        run: docker build -f Dockerfile.ros -t local/ros2-jazzy-gazebo:dev .
