@@ -1,0 +1,41 @@
+# OPTIONAL overlay. Do not run on the RTX 2060 6 GB: Isaac Sim 6.2 requires
+# substantially more GPU VRAM (NVIDIA specifies 16 GB minimum).
+# This uses NVIDIA's pre-built image; no second Dockerfile is necessary.
+# On a supported machine, run:
+#   docker compose -f compose.yaml -f compose.isaac.yaml --profile isaac up -d isaac
+
+services:
+  isaac:
+    profiles: ["isaac"]
+    image: nvcr.io/nvidia/isaac-sim:6.2.0
+    working_dir: /isaac-sim
+    entrypoint: ["/bin/bash", "-lc"]
+    command: ["./runheadless.sh -v"]
+    init: true
+    network_mode: host
+    gpus: all
+    shm_size: 2gb
+    environment:
+      ACCEPT_EULA: ${ACCEPT_EULA:-N}
+      PRIVACY_CONSENT: ${PRIVACY_CONSENT:-N}
+      ROS_DOMAIN_ID: ${ROS_DOMAIN_ID:-42}
+      RMW_IMPLEMENTATION: rmw_fastrtps_cpp
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: all
+    volumes:
+      - isaac_cache:/isaac-sim/.cache
+      - isaac_compute_cache:/isaac-sim/.nv/ComputeCache
+      - isaac_kit_cache:/isaac-sim/kit/cache
+      - isaac_logs:/isaac-sim/.nvidia-omniverse/logs
+      - isaac_config:/isaac-sim/.nvidia-omniverse/config
+      - isaac_data:/isaac-sim/.local/share/ov/data
+      - isaac_pkg:/isaac-sim/.local/share/ov/pkg
+
+volumes:
+  isaac_cache:
+  isaac_compute_cache:
+  isaac_kit_cache:
+  isaac_logs:
+  isaac_config:
+  isaac_data:
+  isaac_pkg:

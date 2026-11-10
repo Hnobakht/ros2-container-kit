@@ -1,0 +1,17 @@
+{
+  "name": "ROS 2 Jazzy + Gazebo Harmonic",
+  "dockerComposeFile": "../compose.yaml",
+  "service": "ros",
+  "workspaceFolder": "/workspace/ros2_ws",
+  "remoteUser": "ros",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-python.python",
+        "ms-iot.vscode-ros"
+      ]
+    }
+  }
+}

@@ -1,0 +1,43 @@
+name: ros2-jazzy-dev
+
+services:
+  ros:
+    build:
+      context: .
+      dockerfile: Dockerfile.ros
+      args:
+        LOCAL_UID: ${LOCAL_UID:?Run ./scripts/prepare.sh first}
+        LOCAL_GID: ${LOCAL_GID:?Run ./scripts/prepare.sh first}
+    image: local/ros2-jazzy-gazebo:dev
+    init: true
+    tty: true
+    stdin_open: true
+    command: ["sleep", "infinity"]
+    # ROS DDS discovery/multicast works more predictably on host networking.
+    network_mode: host
+    gpus: all
+    shm_size: 1gb
+    environment:
+      DISPLAY: ${ROS_DISPLAY:?Run ./scripts/prepare.sh first}
+      XAUTHORITY: /tmp/ros-docker.Xauthority
+      QT_X11_NO_MITSHM: "1"
+      ROS_DOMAIN_ID: ${ROS_DOMAIN_ID:-42}
+      RMW_IMPLEMENTATION: rmw_fastrtps_cpp
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: graphics,display,compute,utility
+    volumes:
+      - type: bind
+        source: ./ros2_ws
+        target: /workspace/ros2_ws
+      - type: bind
+        source: ${ROS_XAUTHORITY:?Run ./scripts/prepare.sh first}
+        target: /tmp/ros-docker.Xauthority
+        read_only: true
+      - type: bind
+        source: /tmp/.X11-unix
+        target: /tmp/.X11-unix
+        read_only: true
+      - ros_user_cache:/home/ros/.ros
+
+volumes:
+  ros_user_cache:
