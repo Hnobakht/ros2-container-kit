@@ -13,9 +13,10 @@ df -h .
 bash scripts/preload.sh --all
 ```
 
-This builds the base and three optional images, checks out curated upstream
-robotics source references and Gazebo's legacy model database, and downloads a
-compact set of vision, depth-estimation and embedding models. Cached model
+This caches curated upstream source checkouts and Gazebo's legacy model database
+first (so a later Docker build failure will not prevent source downloads),
+then builds the base and three optional images and downloads a compact set of
+vision, depth-estimation and embedding models. Cached model
 weights live in the `ml_cache` Docker volume; other downloads live in
 `./downloads` on your host. Clone histories are shallow to save disk;
 working source files are present.

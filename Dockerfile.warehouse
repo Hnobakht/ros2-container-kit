@@ -7,6 +7,8 @@ USER root
 # Warehouse 3D models/maps are fetched separately by the preload workflow.
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ros-jazzy-rmf-demos \
+        ros-jazzy-rmf-traffic-editor \
+        ros-jazzy-rmf-building-map-tools \
         ros-jazzy-rosbag2-storage-mcap \
         python3-yaml \
         sqlite3 \

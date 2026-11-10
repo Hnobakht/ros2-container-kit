@@ -28,6 +28,7 @@ RUN sed -i 's/^Types: deb deb-src$/Types: deb/' \
 # ros-jazzy-ros-gz selects the supported Gazebo Harmonic vendor packages.
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ros-jazzy-ros-gz \
+        ros-jazzy-ros-gz-sim-demos \
         ros-jazzy-rviz2 \
         ros-jazzy-navigation2 \
         ros-jazzy-nav2-bringup \
@@ -36,6 +37,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ros-jazzy-ros2-control \
         ros-jazzy-ros2-controllers \
         ros-jazzy-gz-ros2-control \
+        ros-jazzy-gz-ros2-control-demos \
         ros-jazzy-teleop-twist-keyboard \
         ros-jazzy-teleop-twist-joy \
         ros-jazzy-joy \
@@ -45,6 +47,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ros-jazzy-image-transport-plugins \
         ros-jazzy-vision-opencv \
         ros-jazzy-depth-image-proc \
+        ros-jazzy-pointcloud-to-laserscan \
         ros-jazzy-rosbag2-storage-mcap \
         ros-jazzy-rqt-graph \
         ros-jazzy-rqt-image-view \

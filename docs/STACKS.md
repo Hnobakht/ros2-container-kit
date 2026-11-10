@@ -9,10 +9,10 @@ Run `docker compose build ros` before building optional images.
 
 | Stack | Image | Best for | Principal tools |
 |---|---|---|---|
-| `ros` | `local/ros2-jazzy-gazebo:dev` | Mobile robots, JetBot-like robots, perception | Nav2, SLAM Toolbox, robot_localization, ros2_control, Gazebo, RViz, MCAP |
+| `ros` | `local/ros2-jazzy-gazebo:dev` | Mobile robots, JetBot-like robots, perception | Nav2, SLAM Toolbox, robot_localization, ros2_control, Gazebo, RViz, point clouds, MCAP |
 | `ml` | `local/ros2-jazzy-ml:dev` | AI, ML, RL, robot learning | PyTorch CUDA 12.6, SB3, Gymnasium, PettingZoo, MuJoCo, Jupyter, Hugging Face |
 | `manipulation` | `local/ros2-jazzy-manipulation:dev` | Industrial arms | MoveIt 2, Universal Robots ROS 2 driver, UR/Gazebo simulation |
-| `warehouse` | `local/ros2-jazzy-warehouse:dev` | Fleet logistics/digital twins | Open-RMF demos, Gazebo worlds, MCAP |
+| `warehouse` | `local/ros2-jazzy-warehouse:dev` | Fleet logistics/digital twins | Open-RMF demos, Traffic Editor / building-map tools, Gazebo worlds, MCAP |
 
 ## Build and launch
 
@@ -116,12 +116,17 @@ docker compose -f compose.yaml -f compose.stacks.yaml --profile warehouse up -d 
 docker compose -f compose.yaml -f compose.stacks.yaml --profile warehouse exec warehouse bash
 ros2 pkg prefix rmf_demos_gz
 ros2 launch rmf_demos_gz office.launch.xml
+traffic-editor  # interactive floorplan and navigation graph authoring
 ```
 
 Open-RMF demos include hotel, office, airport, clinic, campus and
 manufacturing/logistics examples. Some worlds can require extra assets or
 additional services. First test with the GUI on your existing NVIDIA setup.
 See https://github.com/open-rmf/rmf_demos .
+
+The `rmf_traffic_editor` tooling lets you annotate building floorplans and
+generate warehouse/factory navigation graphs and compatible simulation assets.
+Its Jazzy source is also included in the optional offline checkout.
 
 Assets downloaded by `scripts/preload.sh --sources` are mounted read-only
 under `/workspace/assets`. These legacy Gazebo-model assets may need

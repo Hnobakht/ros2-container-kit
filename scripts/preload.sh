@@ -48,13 +48,6 @@ mkdir -p downloads/{sources,assets,datasets}
 
 compose=(docker compose -f compose.yaml -f compose.stacks.yaml)
 
-if "${do_images}"; then
-  "${compose[@]}" build ros
-  for service in manipulation warehouse ml; do
-    "${compose[@]}" build "${service}"
-  done
-fi
-
 clone_reference() {
   local name="$1" url="$2" ref="$3"
   local dest="downloads/sources/${name}"
@@ -78,6 +71,7 @@ if "${do_sources}"; then
   clone_reference universal_robots_ros2_driver \
     https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git jazzy
   clone_reference rmf_demos https://github.com/open-rmf/rmf_demos.git jazzy
+  clone_reference rmf_traffic_editor https://github.com/open-rmf/rmf_traffic_editor.git jazzy
   clone_reference universal_robots_gz_simulation \
     https://github.com/UniversalRobots/Universal_Robots_ROS2_GZ_Simulation.git ros2
   clone_reference jetbot https://github.com/NVIDIA-AI-IOT/jetbot.git ''
@@ -88,6 +82,13 @@ if "${do_sources}"; then
     git clone --depth 1 https://github.com/osrf/gazebo_models.git \
       downloads/assets/gazebo_models
   fi
+fi
+
+if "${do_images}"; then
+  "${compose[@]}" build ros
+  for service in manipulation warehouse ml; do
+    "${compose[@]}" build "${service}"
+  done
 fi
 
 if "${do_models}"; then
