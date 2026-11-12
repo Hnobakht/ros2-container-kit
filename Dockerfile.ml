@@ -14,16 +14,31 @@ ARG TORCH_CUDA_INDEX=https://download.pytorch.org/whl/cu126
 COPY requirements/ml.txt /tmp/requirements-ml.txt
 COPY scripts/preload_models.py /opt/robotics/preload_models.py
 
-RUN python3 -m venv --system-site-packages "${VIRTUAL_ENV}" \
-    && "${VIRTUAL_ENV}/bin/python" -m pip install --no-cache-dir --upgrade pip wheel \
-    && "${VIRTUAL_ENV}/bin/python" -m pip install --no-cache-dir \
-        torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 \
-        --index-url "${TORCH_CUDA_INDEX}" \
-    && "${VIRTUAL_ENV}/bin/python" -m pip install --no-cache-dir \
-        -r /tmp/requirements-ml.txt \
-    && mkdir -p /home/ros/.cache \
-    && chown -R ros /opt/venvs /opt/robotics /home/ros/.cache
+RUN python3 -m venv --system-site-packages "${VIRTUAL_ENV}"
+
+RUN "${VIRTUAL_ENV}/bin/python" -m pip install --no-cache-dir \
+    -i https://mirror.nju.edu.cn/pypi/web/simple --trusted-host mirror.nju.edu.cn \
+    --upgrade pip wheel
+
+RUN "${VIRTUAL_ENV}/bin/python" -m pip install --no-cache-dir \
+    -i https://mirror.nju.edu.cn/pypi/web/simple --trusted-host mirror.nju.edu.cn \
+    torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 \
+    --index-url "${TORCH_CUDA_INDEX}"
+
+RUN "${VIRTUAL_ENV}/bin/python" -m pip install --no-cache-dir \
+    -i https://mirror.nju.edu.cn/pypi/web/simple --trusted-host mirror.nju.edu.cn \
+    -r /tmp/requirements-ml.txt
+
+RUN mkdir -p /home/ros/.cache
+
+RUN chown -R ros /opt/robotics 
+
+RUN chown -R ros  /home/ros/.cache
+
+RUN chown -R ros /opt/venvs
 
 USER ros
+
 WORKDIR /workspace/ros2_ws
+
 CMD ["bash"]

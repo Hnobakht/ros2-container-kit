@@ -80,6 +80,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgl1-mesa-dri \
         less \
         nano \
+        vim \
     && rm -rf /var/lib/apt/lists/*
 
 # Match the host UID/GID to avoid root-owned bind-mounted files. Ubuntu 24.04
