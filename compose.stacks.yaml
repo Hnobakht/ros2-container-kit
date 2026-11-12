@@ -4,6 +4,7 @@
 services:
   ml:
     extends:
+      file: compose.yaml
       service: ros
     profiles: [ml]
     build:
@@ -19,6 +20,7 @@ services:
 
   manipulation:
     extends:
+      file: compose.yaml
       service: ros
     profiles: [manipulation]
     build:
@@ -32,6 +34,7 @@ services:
 
   warehouse:
     extends:
+      file: compose.yaml
       service: ros
     profiles: [warehouse]
     build:
